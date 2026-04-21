@@ -1,25 +1,25 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../domain/user.entity';
-import { UserTypeOrmRepository } from './user-typeorm.repository';
-import { USER_REPOSITORY } from '../application/user.repository';
+import { Balance } from '../domain/balance.entity';
+import { BalanceTypeOrmRepository } from './balance-typeorm.repository';
+import { BALANCE_REPOSITORY } from '../application/balance.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database.sqlite',
-      entities: [User],
+      entities: [Balance],
       synchronize: true, // Only for development
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Balance]),
   ],
   providers: [
     {
-      provide: USER_REPOSITORY,
-      useClass: UserTypeOrmRepository,
+      provide: BALANCE_REPOSITORY,
+      useClass: BalanceTypeOrmRepository,
     },
   ],
-  exports: [USER_REPOSITORY],
+  exports: [BALANCE_REPOSITORY],
 })
 export class DatabaseModule {}
