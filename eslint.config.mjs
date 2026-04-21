@@ -2,7 +2,6 @@
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import boundaries from 'eslint-plugin-boundaries';
-import { fixupPluginRules } from '@eslint/compat';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -15,29 +14,35 @@ export default tseslint.config(
   eslintPluginPrettierRecommended,
   {
     plugins: {
-      boundaries: fixupPluginRules(boundaries),
+      boundaries,
     },
     settings: {
+      'boundaries/root-path': import.meta.dirname,
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+        },
+      },
       'boundaries/elements': [
         {
           type: 'domain',
           pattern: 'src/domain/**',
-          mode: 'full',
         },
         {
           type: 'application',
           pattern: 'src/application/**',
-          mode: 'full',
         },
         {
           type: 'infrastructure',
           pattern: 'src/infrastructure/**',
-          mode: 'full',
         },
         {
           type: 'main',
           pattern: 'src/main.ts',
-          mode: 'full',
+        },
+        {
+          type: 'test',
+          pattern: 'test/**',
         },
       ],
     },
@@ -77,6 +82,10 @@ export default tseslint.config(
             {
               from: 'main',
               allow: ['infrastructure'],
+            },
+            {
+              from: 'test',
+              allow: ['infrastructure', 'application', 'domain'],
             },
           ],
         },
