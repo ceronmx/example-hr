@@ -41,7 +41,7 @@ export class HcmSyncLogEntity {
   @Column('datetime', { nullable: true })
   finished_at!: Date | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   last_processed_id!: string | null;
 
   @Column('text')
