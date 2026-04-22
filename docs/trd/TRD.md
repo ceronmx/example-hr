@@ -8,7 +8,7 @@ ExampleHR is a high-resilience Time-Off Microservice designed to integrate with 
 ### 1. External Updates (The Anniversary Problem)
 **Challenge:** External HCM systems often update employee balances automatically (e.g., on work anniversaries or policy changes) without notifying the microservice in real-time.
 **Solution:** **Batch Reconciliation Logic**.
-The service implements a dedicated reconciliation use case (`SyncBatchBalancesUseCase`) that performs a mass upsert of balances from the HCM. This ensures that the local "Source of Truth" for balance inquiry eventually matches the master HCM system, accounting for any silent updates.
+The service implements a dedicated reconciliation use case (`SyncBatchBalancesUseCase`) that performs a mass upsert of balances from the HCM. This ensures that the local "Source of Truth" for balance inquiry eventually matches the master HCM system, accounting for any silent updates. Such Batch reconciliation process can potentially be setup in a cronjob that runs overnight.
 
 ### 2. Real-time API vs. Data Drift
 **Challenge:** Creating a request involves multiple steps (Approval, Syncing) where the HCM state might change mid-process.
@@ -40,7 +40,4 @@ The strict separation of concerns was foundational for **Agentic Development** (
 - **Isolated Verification:** The coding agent could verify complex business rules (like projected balance math) through pure unit tests in the Domain layer before external adapters were even built.
 - **Contract-First:** Defining interfaces (Ports) allowed the AI to work on different layers in parallel, ensuring that the Infrastructure always adhered to the expectations of the Application layer.
 
----
-
-## Conclusion
-ExampleHR is built for the "Real World" where external systems are slow, flaky, and inconsistent. Through defensive algorithms, strict state management, and a clean hexagonal boundary, we provide a robust foundation for HR operations.
+----
