@@ -22,7 +22,7 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["jest"]
+    "types": ["jest", "node"]
   },
   "include": ["src/**/*", "test/**/*"]
 }

@@ -4,19 +4,17 @@ export const ALLOWED_TRANSITIONS: Record<
   TimeOffRequestStatus,
   TimeOffRequestStatus[]
 > = {
-  [TimeOffRequestStatus.PENDING_APPROVAL]: [
+  [TimeOffRequestStatus.PENDING]: [
     TimeOffRequestStatus.APPROVED,
-    TimeOffRequestStatus.REJECTED,
     TimeOffRequestStatus.CANCELLED,
   ],
   [TimeOffRequestStatus.APPROVED]: [TimeOffRequestStatus.SYNCING],
   [TimeOffRequestStatus.SYNCING]: [
     TimeOffRequestStatus.SYNCED,
-    TimeOffRequestStatus.FAILED_SYNC,
+    TimeOffRequestStatus.FAILED,
   ],
-  [TimeOffRequestStatus.REJECTED]: [],
   [TimeOffRequestStatus.SYNCED]: [],
-  [TimeOffRequestStatus.FAILED_SYNC]: [],
+  [TimeOffRequestStatus.FAILED]: [],
   [TimeOffRequestStatus.CANCELLED]: [],
 };
 
@@ -25,5 +23,5 @@ export function canTransitionTo(
   nextStatus: TimeOffRequestStatus,
 ): boolean {
   const allowed = ALLOWED_TRANSITIONS[currentStatus];
-  return allowed.includes(nextStatus);
+  return allowed?.includes(nextStatus) ?? false;
 }

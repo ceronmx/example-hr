@@ -1,4 +1,4 @@
-import { Balance } from '../domain/balance.entity';
+import { Balance } from '../domain/entities/balance';
 
 export interface BalanceRepository {
   findByKeys(

@@ -1,25 +1,21 @@
-import { TimeOffRequest } from './time-off-request.entity';
+import { TimeOffRequest } from './time-off-request';
 import { TimeOffRequestStatus } from './time-off-request-status.enum';
 
 describe('TimeOffRequest Status Transitions', () => {
   let request: TimeOffRequest;
 
   beforeEach(() => {
-    request = new TimeOffRequest();
-    request.status = TimeOffRequestStatus.PENDING_APPROVAL;
+    request = new TimeOffRequest({
+      status: TimeOffRequestStatus.PENDING,
+    });
   });
 
-  it('should transition from PENDING_APPROVAL to REJECTED', () => {
-    request.transitionTo(TimeOffRequestStatus.REJECTED);
-    expect(request.status).toBe(TimeOffRequestStatus.REJECTED);
-  });
-
-  it('should transition from PENDING_APPROVAL to CANCELLED', () => {
+  it('should transition from PENDING to CANCELLED', () => {
     request.transitionTo(TimeOffRequestStatus.CANCELLED);
     expect(request.status).toBe(TimeOffRequestStatus.CANCELLED);
   });
 
-  it('should transition from PENDING_APPROVAL to APPROVED', () => {
+  it('should transition from PENDING to APPROVED', () => {
     request.transitionTo(TimeOffRequestStatus.APPROVED);
     expect(request.status).toBe(TimeOffRequestStatus.APPROVED);
   });
@@ -32,19 +28,18 @@ describe('TimeOffRequest Status Transitions', () => {
     expect(request.status).toBe(TimeOffRequestStatus.SYNCED);
   });
 
-  it('should transition through APPROVED -> SYNCING -> FAILED_SYNC', () => {
+  it('should transition through APPROVED -> SYNCING -> FAILED', () => {
     request.status = TimeOffRequestStatus.APPROVED;
     request.transitionTo(TimeOffRequestStatus.SYNCING);
     expect(request.status).toBe(TimeOffRequestStatus.SYNCING);
-    request.transitionTo(TimeOffRequestStatus.FAILED_SYNC);
-    expect(request.status).toBe(TimeOffRequestStatus.FAILED_SYNC);
+    request.transitionTo(TimeOffRequestStatus.FAILED);
+    expect(request.status).toBe(TimeOffRequestStatus.FAILED);
   });
 
-  it('should throw error for invalid transition REJECTED -> APPROVED', () => {
-    request.status = TimeOffRequestStatus.REJECTED;
+  it('should throw error for invalid transition PENDING -> SYNCED', () => {
     expect(() => {
-      request.transitionTo(TimeOffRequestStatus.APPROVED);
-    }).toThrow('Invalid status transition from REJECTED to APPROVED');
+      request.transitionTo(TimeOffRequestStatus.SYNCED);
+    }).toThrow('Invalid status transition from PENDING to SYNCED');
   });
 
   it('should throw error for invalid transition SYNCED -> SYNCING', () => {

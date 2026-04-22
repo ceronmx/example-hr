@@ -1,4 +1,4 @@
-import { TimeOffRequest } from '../domain/time-off-request.entity';
+import { TimeOffRequest } from '../domain/entities/time-off-request';
 
 export interface TimeOffRequestRepository {
   findAll(): Promise<TimeOffRequest[]>;

@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Balance } from '../domain/balance.entity';
+import { BalanceEntity } from './persistence/entities/balance.entity';
+import { TimeOffRequestEntity } from './persistence/entities/time-off-request.entity';
+import {
+  HcmSyncLogEntity,
+  SyncBatchItemEntity,
+} from './persistence/entities/hcm-sync-log.entity';
 import { BalanceTypeOrmRepository } from './balance-typeorm.repository';
 import { BALANCE_REPOSITORY } from '../application/balance.repository';
-import { TimeOffRequest } from '../domain/time-off-request.entity';
 import { TimeOffRequestTypeOrmRepository } from './time-off-request-typeorm.repository';
 import { TIME_OFF_REQUEST_REPOSITORY } from '../application/time-off-request.repository';
 
@@ -12,10 +16,20 @@ import { TIME_OFF_REQUEST_REPOSITORY } from '../application/time-off-request.rep
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database.sqlite',
-      entities: [Balance, TimeOffRequest],
+      entities: [
+        BalanceEntity,
+        TimeOffRequestEntity,
+        HcmSyncLogEntity,
+        SyncBatchItemEntity,
+      ],
       synchronize: true, // Only for development
     }),
-    TypeOrmModule.forFeature([Balance, TimeOffRequest]),
+    TypeOrmModule.forFeature([
+      BalanceEntity,
+      TimeOffRequestEntity,
+      HcmSyncLogEntity,
+      SyncBatchItemEntity,
+    ]),
   ],
   providers: [
     {

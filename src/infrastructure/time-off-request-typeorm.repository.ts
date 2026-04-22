@@ -1,29 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TimeOffRequest } from '../domain/time-off-request.entity';
+import { TimeOffRequest } from '../domain/entities/time-off-request';
 import { TimeOffRequestRepository } from '../application/time-off-request.repository';
+import { TimeOffRequestEntity } from './persistence/entities/time-off-request.entity';
+import { TimeOffRequestMapper } from './persistence/mappers/time-off-request.mapper';
 
 @Injectable()
 export class TimeOffRequestTypeOrmRepository implements TimeOffRequestRepository {
   constructor(
-    @InjectRepository(TimeOffRequest)
-    private readonly repository: Repository<TimeOffRequest>,
+    @InjectRepository(TimeOffRequestEntity)
+    private readonly repository: Repository<TimeOffRequestEntity>,
   ) {}
 
-  findAll(): Promise<TimeOffRequest[]> {
-    return this.repository.find({ relations: ['balance'] });
+  async findAll(): Promise<TimeOffRequest[]> {
+    const entities = await this.repository.find({ relations: ['balance'] });
+    return entities.map((e) => TimeOffRequestMapper.toDomain(e));
   }
 
-  findById(id: string): Promise<TimeOffRequest | null> {
-    return this.repository.findOne({
+  async findById(id: string): Promise<TimeOffRequest | null> {
+    const entity = await this.repository.findOne({
       where: { id },
       relations: ['balance'],
     });
+    return entity ? TimeOffRequestMapper.toDomain(entity) : null;
   }
 
-  save(timeOffRequest: TimeOffRequest): Promise<TimeOffRequest> {
-    return this.repository.save(timeOffRequest);
+  async save(timeOffRequest: TimeOffRequest): Promise<TimeOffRequest> {
+    const entity = TimeOffRequestMapper.toPersistence(timeOffRequest);
+    const saved = await this.repository.save(entity);
+    return TimeOffRequestMapper.toDomain(saved);
   }
 
   async delete(id: string): Promise<void> {
