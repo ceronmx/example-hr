@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Balance } from './balance.entity';
 import { TimeOffRequestStatus } from './time-off-request-status.enum';
+import { canTransitionTo } from './time-off-request-transitions';
 
 @Entity('time_off_request')
 export class TimeOffRequest {
@@ -45,4 +46,13 @@ export class TimeOffRequest {
     { name: 'leave_type_id', referencedColumnName: 'leave_type_id' },
   ])
   balance!: Balance;
+
+  transitionTo(nextStatus: TimeOffRequestStatus): void {
+    if (!canTransitionTo(this.status, nextStatus)) {
+      throw new Error(
+        `Invalid status transition from ${this.status} to ${nextStatus}`,
+      );
+    }
+    this.status = nextStatus;
+  }
 }
