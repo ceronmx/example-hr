@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Balance } from './balance.entity';
+import { TimeOffRequestStatus } from './time-off-request-status.enum';
 
 @Entity('time_off_request')
 export class TimeOffRequest {
@@ -27,8 +28,12 @@ export class TimeOffRequest {
   @Column('datetime')
   end_date: Date;
 
-  @Column()
-  status: string;
+  @Column({
+    type: 'simple-enum',
+    enum: TimeOffRequestStatus,
+    default: TimeOffRequestStatus.PENDING_APPROVAL,
+  })
+  status: TimeOffRequestStatus;
 
   @Column({ type: 'uuid', nullable: true, default: null })
   hcm_ref_id: string | null;
