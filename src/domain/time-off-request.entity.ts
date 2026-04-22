@@ -11,32 +11,32 @@ import { TimeOffRequestStatus } from './time-off-request-status.enum';
 @Entity('time_off_request')
 export class TimeOffRequest {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column('uuid')
-  employee_id: string;
+  employee_id!: string;
 
   @Column('uuid')
-  location_id: string;
+  location_id!: string;
 
   @Column('uuid')
-  leave_type_id: string;
+  leave_type_id!: string;
 
   @Column('datetime')
-  start_date: Date;
+  start_date!: Date;
 
   @Column('datetime')
-  end_date: Date;
+  end_date!: Date;
 
   @Column({
     type: 'simple-enum',
     enum: TimeOffRequestStatus,
     default: TimeOffRequestStatus.PENDING_APPROVAL,
   })
-  status: TimeOffRequestStatus;
+  status!: TimeOffRequestStatus;
 
   @Column({ type: 'uuid', nullable: true, default: null })
-  hcm_ref_id: string | null;
+  hcm_ref_id!: string | null;
 
   @ManyToOne(() => Balance)
   @JoinColumn([
@@ -44,5 +44,5 @@ export class TimeOffRequest {
     { name: 'location_id', referencedColumnName: 'location_id' },
     { name: 'leave_type_id', referencedColumnName: 'leave_type_id' },
   ])
-  balance: Balance;
+  balance!: Balance;
 }
