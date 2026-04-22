@@ -1,0 +1,826 @@
+{
+  "info": {
+    "_postman_id": "003a0b0a-9ba2-4c4a-946d-bda46938d6c6",
+    "name": "ExampleHR Time-Off Microservice",
+    "description": "API for managing employee time-off balances and synchronization with HCM systems.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "35060783"
+  },
+  "item": [
+    {
+      "name": "time-off",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "approve",
+              "item": [
+                {
+                  "name": "Approve a pending time-off request",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"managerId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/time-off/:id/approve",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "time-off",
+                        ":id",
+                        "approve"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The UUID of the time-off request"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "Request approved successfully",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"managerId\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/time-off/:id/approve",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "time-off",
+                            ":id",
+                            "approve"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    },
+                    {
+                      "name": "Invalid transition",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"managerId\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/time-off/:id/approve",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "time-off",
+                            ":id",
+                            "approve"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    },
+                    {
+                      "name": "Request not found",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"managerId\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/time-off/:id/approve",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "time-off",
+                            ":id",
+                            "approve"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    },
+                    {
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"managerId\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/time-off/:id/approve",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "time-off",
+                            ":id",
+                            "approve"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "pending",
+          "item": [
+            {
+              "name": "Get all pending time-off requests for a manager",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/time-off/pending?managerId=<string>&locationId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time-off",
+                    "pending"
+                  ],
+                  "query": [
+                    {
+                      "key": "managerId",
+                      "value": "<string>",
+                      "description": "(Required) The unique identifier of the manager"
+                    },
+                    {
+                      "key": "locationId",
+                      "value": "<string>",
+                      "description": "Optional location filter"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "List of pending requests retrieved successfully",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/time-off/pending?managerId=<string>&locationId=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "time-off",
+                        "pending"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The unique identifier of the manager",
+                          "key": "managerId",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Optional location filter",
+                          "key": "locationId",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "employees",
+          "item": [
+            {
+              "name": "{employeeId}",
+              "item": [
+                {
+                  "name": "balances",
+                  "item": [
+                    {
+                      "name": "Get an employee's projected and actual balances",
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/time-off/employees/:employeeId/balances?locationId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "time-off",
+                            "employees",
+                            ":employeeId",
+                            "balances"
+                          ],
+                          "query": [
+                            {
+                              "key": "locationId",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the location"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "employeeId",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the employee"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "Balances retrieved successfully",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/time-off/employees/:employeeId/balances?locationId=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "time-off",
+                                "employees",
+                                ":employeeId",
+                                "balances"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required) The unique identifier of the location",
+                                  "key": "locationId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "employeeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "[\n  {\n    \"leaveTypeId\": \"<string>\",\n    \"actualBalance\": \"<number>\",\n    \"projectedBalance\": \"<number>\"\n  },\n  {\n    \"leaveTypeId\": \"<string>\",\n    \"actualBalance\": \"<number>\",\n    \"projectedBalance\": \"<number>\"\n  }\n]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "balances",
+          "item": [
+            {
+              "name": "{employeeId}",
+              "item": [
+                {
+                  "name": "{locationId}",
+                  "item": [
+                    {
+                      "name": "Get current balance for an employee",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/time-off/balances/:employeeId/:locationId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "time-off",
+                            "balances",
+                            ":employeeId",
+                            ":locationId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "employeeId",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the employee"
+                            },
+                            {
+                              "key": "locationId",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the location"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "Balance retrieved successfully",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/time-off/balances/:employeeId/:locationId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "time-off",
+                                "balances",
+                                ":employeeId",
+                                ":locationId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "employeeId"
+                                },
+                                {
+                                  "key": "locationId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": ""
+                        },
+                        {
+                          "name": "Balance not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/time-off/balances/:employeeId/:locationId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "time-off",
+                                "balances",
+                                ":employeeId",
+                                ":locationId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "employeeId"
+                                },
+                                {
+                                  "key": "locationId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": ""
+                        },
+                        {
+                          "name": "Internal server error",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/time-off/balances/:employeeId/:locationId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "time-off",
+                                "balances",
+                                ":employeeId",
+                                ":locationId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "employeeId"
+                                },
+                                {
+                                  "key": "locationId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Create a new time-off request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeId\": \"<string>\",\n  \"locationId\": \"<string>\",\n  \"leaveTypeId\": \"SICK_LEAVE\",\n  \"daysRequested\": \"<number>\",\n  \"startDate\": \"<string>\",\n  \"endDate\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/time-off",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "time-off"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Request created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"<string>\",\n  \"locationId\": \"<string>\",\n  \"leaveTypeId\": \"SICK_LEAVE\",\n  \"daysRequested\": \"<number>\",\n  \"startDate\": \"<string>\",\n  \"endDate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/time-off",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time-off"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Illegal state transition or bad request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"<string>\",\n  \"locationId\": \"<string>\",\n  \"leaveTypeId\": \"SICK_LEAVE\",\n  \"daysRequested\": \"<number>\",\n  \"startDate\": \"<string>\",\n  \"endDate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/time-off",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time-off"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Insufficient balance",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"<string>\",\n  \"locationId\": \"<string>\",\n  \"leaveTypeId\": \"SICK_LEAVE\",\n  \"daysRequested\": \"<number>\",\n  \"startDate\": \"<string>\",\n  \"endDate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/time-off",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time-off"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"employeeId\": \"<string>\",\n  \"locationId\": \"<string>\",\n  \"leaveTypeId\": \"SICK_LEAVE\",\n  \"daysRequested\": \"<number>\",\n  \"startDate\": \"<string>\",\n  \"endDate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/time-off",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time-off"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sync",
+      "item": [
+        {
+          "name": "batch",
+          "item": [
+            {
+              "name": "Trigger manual batch reconciliation of balances",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sync/batch",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sync",
+                    "batch"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Reconciliation triggered successfully",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/sync/batch",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sync",
+                        "batch"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                },
+                {
+                  "name": "Internal server error during synchronization",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/sync/batch",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sync",
+                        "batch"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

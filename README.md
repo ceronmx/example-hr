@@ -1,98 +1,106 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# ExampleHR: Time-Off Microservice
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![Coverage](https://img.shields.io/badge/Coverage-85.6%25-brightgreen.svg)](./docs/testing/coverage.png)
+[![Postman](https://img.shields.io/badge/Postman-Collection-orange.svg)](./docs/postman/ExampleHR-Time-Off-Microservice.postman_collection.json)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+ExampleHR is a production-ready Time-Off Microservice built with **Hexagonal Architecture** and NestJS. It is designed to handle high-concurrency requests and maintain synchronization with external HCM (Human Capital Management) systems.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🏛 Architecture Overview
 
-## Project setup
+This project follows a strict **Hexagonal Architecture (Ports & Adapters)** pattern to ensure the business logic remains independent of external drivers:
 
+-   **Domain Layer:** Pure business entities, state machine transitions, and custom exceptions.
+-   **Application Layer:** Use cases (Interactors) that orchestrate the domain logic and define ports (Interfaces).
+-   **Infrastructure Layer:** External adapters (TypeORM for SQLite, Fetch for HCM Client, NestJS Controllers).
+
+For a deep dive into the design decisions, see the [Technical Requirement Document (TRD)](./docs/trd/TRD.md).
+
+---
+
+## ✨ Strategic Features
+
+### 1. Defensive "Projected Balance" Calculation
+Employees receive instant feedback. The system calculates available days locally:
+`Available = HCM_Balance - (Pending + Approved + Syncing)`
+This prevents "double-spending" even before the external HCM has updated.
+
+### 2. Reliable State Machine
+Requests follow a validated lifecycle:
+`PENDING_APPROVAL` → `APPROVED` → `SYNCING` → `SYNCED`
+This prevents illegal transitions and ensures data integrity.
+
+### 3. Idempotent HCM Syncing
+Every request sent to the HCM system includes a domain-generated `idempotencyKey`, ensuring that network retries never result in double-deductions.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js v25+
+- pnpm
+
+### Installation
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-## Compile and run the project
+### Running the System
+1. **Start the Mock HCM Server** (Essential for external API integration):
+   ```bash
+   pnpm run hcm:mock
+   ```
+2. **Start the Microservice** (In a new terminal):
+   ```bash
+   pnpm run start:dev
+   ```
+
+---
+
+## 🧪 Testing
+
+The system is built with a "Quality First" mindset:
+- **Domain Layer:** 100% Code Coverage.
+- **E2E Suite:** Covers full happy paths, double-spending protection, and idempotency.
 
 ```bash
-# development
-$ pnpm run start
+# Run Unit Tests
+pnpm run test
 
-# watch mode
-$ pnpm run start:dev
+# Run E2E Integration Tests
+pnpm run test:e2e
 
-# production mode
-$ pnpm run start:prod
+# Generate Coverage Report
+pnpm run test:cov
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ pnpm run test
+## 📊 Reviewer Test Data (Mock HCM)
 
-# e2e tests
-$ pnpm run test:e2e
+Use these IDs for manual testing via Swagger (`http://localhost:3000/api/docs`) or Postman:
 
-# test coverage
-$ pnpm run test:cov
-```
+| Entity | ID | Notes |
+| :--- | :--- | :--- |
+| **Employee** | `EMP-001` | Initial Balance: 25.0 |
+| **Employee** | `EMP-002` | Initial Balance: 10.0 |
+| **Location** | `LOC-001` | Default Test Location |
+| **Leave Type** | `VACATION` | Standard Type |
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🛠 Integration
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- **Postman Collection:** Found in `./docs/postman/ExampleHR-Time-Off-Microservice.postman_collection.json`.
+- **Swagger Documentation:** Available at `http://localhost:3000/api/docs` when the app is running.
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🔐 Security Disclaimer
+For the scope of this technical challenge, Authentication and Authorization (IAM/OAuth2) have been omitted. In a production environment, a robust middleware layer for Identity and Access Management would be mandatory.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**ExampleHR** - *Resilient HR Engineering.*
