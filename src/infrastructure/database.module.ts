@@ -6,9 +6,8 @@ import {
   HcmSyncLogEntity,
   SyncBatchItemEntity,
 } from './persistence/entities/hcm-sync-log.entity';
-import { BalanceTypeOrmRepository } from './balance-typeorm.repository';
+import { TimeOffTypeOrmRepository } from './persistence/time-off.repository';
 import { BALANCE_REPOSITORY } from '../application/balance.repository';
-import { TimeOffRequestTypeOrmRepository } from './time-off-request-typeorm.repository';
 import { TIME_OFF_REQUEST_REPOSITORY } from '../application/time-off-request.repository';
 
 @Module({
@@ -34,11 +33,11 @@ import { TIME_OFF_REQUEST_REPOSITORY } from '../application/time-off-request.rep
   providers: [
     {
       provide: BALANCE_REPOSITORY,
-      useClass: BalanceTypeOrmRepository,
+      useClass: TimeOffTypeOrmRepository,
     },
     {
       provide: TIME_OFF_REQUEST_REPOSITORY,
-      useClass: TimeOffRequestTypeOrmRepository,
+      useClass: TimeOffTypeOrmRepository,
     },
   ],
   exports: [BALANCE_REPOSITORY, TIME_OFF_REQUEST_REPOSITORY],

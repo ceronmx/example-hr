@@ -10,11 +10,12 @@ import {
 import { BalanceEntity } from './balance.entity';
 
 export enum TimeOffStatus {
-  PENDING = 'PENDING',
+  PENDING_APPROVAL = 'PENDING_APPROVAL',
   APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
   SYNCING = 'SYNCING',
   SYNCED = 'SYNCED',
-  FAILED = 'FAILED',
+  FAILED_SYNC = 'FAILED_SYNC',
   CANCELLED = 'CANCELLED',
 }
 
