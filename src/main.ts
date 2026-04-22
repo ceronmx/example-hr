@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useGlobalFilters(new DomainExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('ReadyOn Time-Off Microservice')
+    .setTitle('ExampleHR Time-Off Microservice')
     .setDescription(
       'API for managing employee time-off balances and synchronization with HCM systems.',
     )
