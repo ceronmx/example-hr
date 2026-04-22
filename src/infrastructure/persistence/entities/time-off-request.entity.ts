@@ -21,45 +21,45 @@ export enum TimeOffStatus {
 @Entity('time_off_requests')
 export class TimeOffRequestEntity {
   @PrimaryColumn('uuid')
-  id: string;
+  id!: string;
 
   @Index('idx_tor_employee')
   @Column()
-  employee_id: string;
+  employee_id!: string;
 
   @Index('idx_tor_location')
   @Column()
-  location_id: string;
+  location_id!: string;
 
   @Column()
-  leave_type_id: string;
+  leave_type_id!: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  days_requested: number;
+  days_requested!: number;
 
   @Column('date')
-  start_date: Date;
+  start_date!: Date;
 
   @Column('date')
-  end_date: Date;
+  end_date!: Date;
 
   @Column({
     type: 'simple-enum',
     enum: TimeOffStatus,
   })
-  status: TimeOffStatus;
+  status!: TimeOffStatus;
 
   @Column({ unique: true })
-  idempotency_key: string;
+  idempotency_key!: string;
 
   @Column({ nullable: true })
-  hcm_ref_id: string;
+  hcm_ref_id!: string;
 
   @Column({ type: 'text', nullable: true })
-  error_message: string;
+  error_message!: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @ManyToOne(() => BalanceEntity)
   @JoinColumn([
@@ -67,5 +67,5 @@ export class TimeOffRequestEntity {
     { name: 'location_id', referencedColumnName: 'location_id' },
     { name: 'leave_type_id', referencedColumnName: 'leave_type_id' },
   ])
-  balance: BalanceEntity;
+  balance!: BalanceEntity;
 }

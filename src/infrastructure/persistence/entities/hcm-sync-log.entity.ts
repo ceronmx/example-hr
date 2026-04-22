@@ -21,34 +21,34 @@ export enum SyncStatus {
 @Entity('hcm_sync_logs')
 export class HcmSyncLogEntity {
   @PrimaryColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({
     type: 'simple-enum',
     enum: SyncType,
   })
-  sync_type: SyncType;
+  sync_type!: SyncType;
 
   @Column({
     type: 'simple-enum',
     enum: SyncStatus,
   })
-  status: SyncStatus;
+  status!: SyncStatus;
 
   @Column('datetime')
-  started_at: Date;
+  started_at!: Date;
 
   @Column('datetime', { nullable: true })
-  finished_at: Date | null;
+  finished_at!: Date | null;
 
   @Column({ nullable: true })
-  last_processed_id: string | null;
+  last_processed_id!: string | null;
 
   @Column('text')
-  payload_dump: string; // Store as JSON string
+  payload_dump!: string; // Store as JSON string
 
   @OneToMany(() => SyncBatchItemEntity, (item) => item.sync_log)
-  items: SyncBatchItemEntity[];
+  items!: SyncBatchItemEntity[];
 }
 
 export enum BatchItemStatus {
@@ -59,24 +59,24 @@ export enum BatchItemStatus {
 @Entity('sync_batch_items')
 export class SyncBatchItemEntity {
   @PrimaryColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  sync_log_id: string;
+  sync_log_id!: string;
 
   @Column()
-  employee_id: string;
+  employee_id!: string;
 
   @Column({
     type: 'simple-enum',
     enum: BatchItemStatus,
   })
-  status: BatchItemStatus;
+  status!: BatchItemStatus;
 
   @Column('text', { nullable: true })
-  error_details: string | null;
+  error_details!: string | null;
 
   @ManyToOne(() => HcmSyncLogEntity, (log) => log.items)
   @JoinColumn({ name: 'sync_log_id' })
-  sync_log: HcmSyncLogEntity;
+  sync_log!: HcmSyncLogEntity;
 }
