@@ -184,6 +184,39 @@ describe('TimeOff E2E Integration Suite', () => {
     });
   });
 
+  describe('Manager Flow', () => {
+    it('Given a pending request, When manager fetches pending, Then it should appear in the list', async () => {
+      const employeeId = 'EMP-001';
+      const locationId = 'LOC-001';
+
+      // 1. Ensure balance exists
+      await request(app.getHttpServer() as string)
+        .post('/sync/batch')
+        .send();
+
+      // 2. Create request
+      await request(app.getHttpServer() as string)
+        .post('/time-off')
+        .send({
+          employeeId,
+          locationId,
+          leaveTypeId: 'VACATION',
+          daysRequested: 3,
+          startDate: '2026-08-01',
+          endDate: '2026-08-04',
+        });
+
+      // 3. Get Pending
+      const res = await request(app.getHttpServer() as string)
+        .get(`/time-off/pending?managerId=MGR-001&locationId=${locationId}`)
+        .send();
+
+      expect(res.status).toBe(200);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect((res.body as any[]).length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
   describe('Idempotency Key Validation', () => {
     it('Given same idempotency key, Then HCM should only deduct balance once', async () => {
       // Mock HCM direct calls
