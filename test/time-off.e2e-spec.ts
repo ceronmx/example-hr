@@ -119,6 +119,71 @@ describe('TimeOff E2E Integration Suite', () => {
     });
   });
 
+  describe('Projected Balance Inquiry', () => {
+    it('Given a new pending request, Then projectedBalance should be reduced while actualBalance remains same', async () => {
+      // 1. Initial Sync
+      await request(app.getHttpServer() as string)
+        .post('/sync/batch')
+        .send();
+
+      const employeeId = 'EMP-001';
+      const locationId = 'LOC-001';
+
+      // 2. Check initial balance
+      const initialRes = await request(app.getHttpServer() as string)
+        .get(
+          `/time-off/employees/${employeeId}/balances?locationId=${locationId}`,
+        )
+        .send();
+
+      expect(initialRes.status).toBe(200);
+      const vacationInitial = (
+        initialRes.body as {
+          leaveTypeId: string;
+          actualBalance: number;
+          projectedBalance: number;
+        }[]
+      ).find((b) => b.leaveTypeId === 'VACATION');
+
+      expect(vacationInitial).toBeDefined();
+      const initialActual = vacationInitial!.actualBalance;
+      const initialProjected = vacationInitial!.projectedBalance;
+
+      // 3. Create a request for 5 days
+      const daysRequested = 5;
+      await request(app.getHttpServer() as string)
+        .post('/time-off')
+        .send({
+          employeeId,
+          locationId,
+          leaveTypeId: 'VACATION',
+          daysRequested,
+          startDate: '2026-07-01',
+          endDate: '2026-07-06',
+        });
+
+      // 4. Check balance again
+      const finalRes = await request(app.getHttpServer() as string)
+        .get(
+          `/time-off/employees/${employeeId}/balances?locationId=${locationId}`,
+        )
+        .send();
+
+      const vacationFinal = (
+        finalRes.body as {
+          leaveTypeId: string;
+          actualBalance: number;
+          projectedBalance: number;
+        }[]
+      ).find((b) => b.leaveTypeId === 'VACATION');
+
+      expect(vacationFinal!.actualBalance).toBe(initialActual);
+      expect(vacationFinal!.projectedBalance).toBe(
+        initialProjected - daysRequested,
+      );
+    });
+  });
+
   describe('Idempotency Key Validation', () => {
     it('Given same idempotency key, Then HCM should only deduct balance once', async () => {
       // Mock HCM direct calls

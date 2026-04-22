@@ -27,6 +27,18 @@ export class BalanceTypeOrmRepository implements BalanceRepository {
     return entity ? BalanceMapper.toDomain(entity) : null;
   }
 
+  async findByEmployee(
+    employeeId: string,
+    locationId: string,
+  ): Promise<Balance[]> {
+    const entities = await this.repository.findBy({
+      employee_id: employeeId,
+      location_id: locationId,
+    });
+
+    return entities.map((e) => BalanceMapper.toDomain(e));
+  }
+
   async save(balance: Balance): Promise<Balance> {
     const entity = BalanceMapper.toPersistence(balance);
     const saved = await this.repository.save(entity);

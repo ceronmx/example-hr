@@ -4,6 +4,7 @@ import { CreateRequestUseCase } from '../application/use-cases/create-request.us
 import { ApproveRequestUseCase } from '../application/use-cases/approve-request.use-case';
 import { SyncBatchBalancesUseCase } from '../application/use-cases/sync-batch-balances.use-case';
 import { GetPendingRequestsUseCase } from '../application/use-cases/get-pending-requests.use-case';
+import { GetEmployeeBalancesUseCase } from '../application/use-cases/get-employee-balances.use-case';
 import { TimeOffController } from './controllers/time-off.controller';
 import { SyncController } from './controllers/sync.controller';
 import { BALANCE_REPOSITORY } from '../application/balance.repository';
@@ -44,6 +45,12 @@ export const HCM_CLIENT = Symbol('IHcmClient');
       inject: [TIME_OFF_REQUEST_REPOSITORY],
       useFactory: (repo: ITimeOffRepository) =>
         new GetPendingRequestsUseCase(repo),
+    },
+    {
+      provide: GetEmployeeBalancesUseCase,
+      inject: [BALANCE_REPOSITORY],
+      useFactory: (repo: ITimeOffRepository) =>
+        new GetEmployeeBalancesUseCase(repo),
     },
   ],
 })

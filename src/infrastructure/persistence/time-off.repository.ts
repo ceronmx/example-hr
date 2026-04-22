@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { ITimeOffRepository } from '../../application/ports/time-off-repository.interface';
 import { Balance } from '../../domain/entities/balance';
 import { TimeOffRequest } from '../../domain/entities/time-off-request';
@@ -15,6 +15,7 @@ import { BalanceMapper } from './mappers/balance.mapper';
 import { TimeOffRequestMapper } from './mappers/time-off-request.mapper';
 import { HcmSyncLogMapper } from './mappers/hcm-sync-log.mapper';
 import { LeaveType } from '../../domain/entities/leave-type.enum';
+import { TimeOffRequestStatus } from '../../domain/entities/time-off-request-status.enum';
 
 @Injectable()
 export class TimeOffTypeOrmRepository implements ITimeOffRepository {
@@ -38,6 +39,17 @@ export class TimeOffTypeOrmRepository implements ITimeOffRepository {
       leave_type_id: leaveTypeId as string,
     });
     return entity ? BalanceMapper.toDomain(entity) : null;
+  }
+
+  async findAllBalancesByEmployee(
+    employeeId: string,
+    locationId: string,
+  ): Promise<Balance[]> {
+    const entities = await this.balanceRepo.findBy({
+      employee_id: employeeId,
+      location_id: locationId,
+    });
+    return entities.map((e) => BalanceMapper.toDomain(e));
   }
 
   async saveBalance(balance: Balance): Promise<void> {
@@ -66,6 +78,23 @@ export class TimeOffTypeOrmRepository implements ITimeOffRepository {
         status: TimeOffStatus.PENDING_APPROVAL,
       },
     });
+    return entities.map((e) => TimeOffRequestMapper.toDomain(e));
+  }
+
+  async findActiveRequestsByEmployee(
+    employeeId: string,
+    locationId: string,
+    statuses: TimeOffRequestStatus[],
+  ): Promise<TimeOffRequest[]> {
+    const entities = await this.requestRepo.find({
+      where: {
+        employee_id: employeeId,
+        location_id: locationId,
+        status: In(statuses as unknown as TimeOffStatus[]),
+      },
+      relations: ['balance'],
+    });
+
     return entities.map((e) => TimeOffRequestMapper.toDomain(e));
   }
 
