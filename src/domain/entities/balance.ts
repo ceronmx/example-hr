@@ -1,7 +1,9 @@
+import { LeaveType } from './leave-type.enum';
+
 export class Balance {
   employeeId!: string;
   locationId!: string;
-  leaveTypeId!: string;
+  leaveTypeId!: LeaveType;
   currentBalance!: number;
   lastSyncedAt!: Date;
   updatedAt?: Date;

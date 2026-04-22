@@ -1,0 +1,5 @@
+export enum LeaveType {
+  VACATION = 'VACATION',
+  SICK_LEAVE = 'SICK_LEAVE',
+  PERSONAL_DAYS = 'PERSONAL_DAYS',
+}

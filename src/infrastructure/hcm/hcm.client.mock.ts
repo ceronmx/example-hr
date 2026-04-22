@@ -2,13 +2,14 @@ import { IHcmClient } from '../../application/ports/hcm-client.interface';
 import { Balance } from '../../domain/entities/balance';
 import { TimeOffRequest } from '../../domain/entities/time-off-request';
 import { Injectable } from '@nestjs/common';
+import { LeaveType } from '../../domain/entities/leave-type.enum';
 
 @Injectable()
 export class HcmClientMock implements IHcmClient {
   getRemoteBalance(
     employeeId: string,
     locationId: string,
-    leaveTypeId: string,
+    leaveTypeId: LeaveType,
   ): Promise<Balance> {
     return Promise.resolve(
       new Balance({
@@ -31,7 +32,7 @@ export class HcmClientMock implements IHcmClient {
       new Balance({
         employeeId: 'EMP001',
         locationId: 'LOC001',
-        leaveTypeId: 'VACATION',
+        leaveTypeId: LeaveType.VACATION,
         currentBalance: 20,
         lastSyncedAt: new Date(),
       }),

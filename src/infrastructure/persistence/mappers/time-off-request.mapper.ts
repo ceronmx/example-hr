@@ -5,6 +5,7 @@ import {
 } from '../entities/time-off-request.entity';
 import { TimeOffRequestStatus } from '../../../domain/entities/time-off-request-status.enum';
 import { BalanceMapper } from './balance.mapper';
+import { LeaveType } from '../../../domain/entities/leave-type.enum';
 
 export class TimeOffRequestMapper {
   static toDomain(entity: TimeOffRequestEntity): TimeOffRequest {
@@ -12,7 +13,7 @@ export class TimeOffRequestMapper {
       id: entity.id,
       employeeId: entity.employee_id,
       locationId: entity.location_id,
-      leaveTypeId: entity.leave_type_id,
+      leaveTypeId: entity.leave_type_id as LeaveType,
       daysRequested: Number(entity.days_requested),
       startDate: entity.start_date,
       endDate: entity.end_date,

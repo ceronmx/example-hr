@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsPositive,
   IsString,
 } from 'class-validator';
+import { LeaveType } from '../../domain/entities/leave-type.enum';
 
 export class CreateTimeOffRequestDto {
   @ApiProperty({
@@ -27,13 +29,13 @@ export class CreateTimeOffRequestDto {
   locationId: string;
 
   @ApiProperty({
-    description: 'The unique identifier of the leave type',
-    example: 'vacation-001',
-    type: 'string',
+    description: 'The type of leave requested',
+    enum: LeaveType,
+    example: LeaveType.VACATION,
   })
-  @IsString()
+  @IsEnum(LeaveType)
   @IsNotEmpty()
-  leaveTypeId: string;
+  leaveTypeId: LeaveType;
 
   @ApiProperty({
     description: 'Number of days requested',

@@ -4,11 +4,12 @@ import { TimeOffRequest } from '../../domain/entities/time-off-request';
 import { TimeOffRequestStatus } from '../../domain/entities/time-off-request-status.enum';
 import { EntityNotFoundException } from '../../domain/exceptions/entity-not-found.exception';
 import { InsufficientBalanceException } from '../../domain/exceptions/insufficient-balance.exception';
+import { LeaveType } from '../../domain/entities/leave-type.enum';
 
 export interface CreateRequestInput {
   employeeId: string;
   locationId: string;
-  leaveTypeId: string;
+  leaveTypeId: LeaveType;
   daysRequested: number;
   startDate: Date;
   endDate: Date;

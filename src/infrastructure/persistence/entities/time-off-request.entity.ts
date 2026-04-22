@@ -33,7 +33,7 @@ export class TimeOffRequestEntity {
   location_id!: string;
 
   @Column()
-  leave_type_id!: string;
+  leave_type_id!: string; // Stored as string in SQLite
 
   @Column('decimal', { precision: 10, scale: 2 })
   days_requested!: number;

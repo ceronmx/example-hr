@@ -2,12 +2,13 @@ import { TimeOffRequestStatus } from './time-off-request-status.enum';
 import { canTransitionTo } from './time-off-request-transitions';
 import { Balance } from './balance';
 import { DomainException } from '../exceptions/domain.exception';
+import { LeaveType } from './leave-type.enum';
 
 export class TimeOffRequest {
   id!: string;
   employeeId!: string;
   locationId!: string;
-  leaveTypeId!: string;
+  leaveTypeId!: LeaveType;
   daysRequested!: number;
   startDate!: Date;
   endDate!: Date;

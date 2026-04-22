@@ -8,14 +8,23 @@ import {
   HttpStatus,
   HttpCode,
   Inject,
+  Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { CreateRequestUseCase } from '../../application/use-cases/create-request.use-case';
 import { ApproveRequestUseCase } from '../../application/use-cases/approve-request.use-case';
+import { GetPendingRequestsUseCase } from '../../application/use-cases/get-pending-requests.use-case';
 import type { ITimeOffRepository } from '../../application/ports/time-off-repository.interface';
 import { CreateTimeOffRequestDto } from '../dtos/create-time-off-request.dto';
 import { ApproveRequestDto } from '../dtos/approve-request.dto';
 import { BALANCE_REPOSITORY } from '../../application/balance.repository';
+import { LeaveType } from '../../domain/entities/leave-type.enum';
 
 @ApiTags('Time-Off')
 @Controller('time-off')
@@ -23,6 +32,7 @@ export class TimeOffController {
   constructor(
     private readonly createRequestUseCase: CreateRequestUseCase,
     private readonly approveRequestUseCase: ApproveRequestUseCase,
+    private readonly getPendingRequestsUseCase: GetPendingRequestsUseCase,
     @Inject(BALANCE_REPOSITORY)
     private readonly repository: ITimeOffRepository,
   ) {}
@@ -59,6 +69,32 @@ export class TimeOffController {
     });
   }
 
+  @Get('pending')
+  @ApiOperation({ summary: 'Get all pending time-off requests for a manager' })
+  @ApiQuery({
+    name: 'managerId',
+    required: true,
+    description: 'The unique identifier of the manager',
+  })
+  @ApiQuery({
+    name: 'locationId',
+    required: false,
+    description: 'Optional location filter',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of pending requests retrieved successfully',
+  })
+  async getPending(
+    @Query('managerId') managerId: string,
+    @Query('locationId') locationId?: string,
+  ) {
+    return await this.getPendingRequestsUseCase.execute({
+      managerId,
+      locationId,
+    });
+  }
+
   @Get('balances/:employeeId/:locationId')
   @ApiOperation({ summary: 'Get current balance for an employee' })
   @ApiParam({
@@ -79,7 +115,7 @@ export class TimeOffController {
     return await this.repository.findBalance(
       employeeId,
       locationId,
-      'VACATION',
+      LeaveType.VACATION,
     );
   }
 }

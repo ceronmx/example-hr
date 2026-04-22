@@ -14,6 +14,7 @@ import { HcmSyncLogEntity } from './entities/hcm-sync-log.entity';
 import { BalanceMapper } from './mappers/balance.mapper';
 import { TimeOffRequestMapper } from './mappers/time-off-request.mapper';
 import { HcmSyncLogMapper } from './mappers/hcm-sync-log.mapper';
+import { LeaveType } from '../../domain/entities/leave-type.enum';
 
 @Injectable()
 export class TimeOffTypeOrmRepository implements ITimeOffRepository {
@@ -29,12 +30,12 @@ export class TimeOffTypeOrmRepository implements ITimeOffRepository {
   async findBalance(
     employeeId: string,
     locationId: string,
-    leaveTypeId: string,
+    leaveTypeId: LeaveType,
   ): Promise<Balance | null> {
     const entity = await this.balanceRepo.findOneBy({
       employee_id: employeeId,
       location_id: locationId,
-      leave_type_id: leaveTypeId,
+      leave_type_id: leaveTypeId as string,
     });
     return entity ? BalanceMapper.toDomain(entity) : null;
   }
@@ -55,13 +56,13 @@ export class TimeOffTypeOrmRepository implements ITimeOffRepository {
   async findPendingRequests(
     employeeId: string,
     locationId: string,
-    leaveTypeId: string,
+    leaveTypeId: LeaveType,
   ): Promise<TimeOffRequest[]> {
     const entities = await this.requestRepo.find({
       where: {
         employee_id: employeeId,
         location_id: locationId,
-        leave_type_id: leaveTypeId,
+        leave_type_id: leaveTypeId as string,
         status: TimeOffStatus.PENDING_APPROVAL,
       },
     });
@@ -76,5 +77,23 @@ export class TimeOffTypeOrmRepository implements ITimeOffRepository {
   async saveSyncLog(log: HcmSyncLog): Promise<void> {
     const entity = HcmSyncLogMapper.toPersistence(log);
     await this.syncLogRepo.save(entity);
+  }
+
+  async findPending(locationId?: string): Promise<TimeOffRequest[]> {
+    const where: { status: TimeOffStatus; location_id?: string } = {
+      status: TimeOffStatus.PENDING_APPROVAL,
+    };
+    if (locationId) {
+      where.location_id = locationId;
+    }
+    const entities = await this.requestRepo.find({
+      where,
+      relations: ['balance'],
+    });
+    return entities.map((e) => TimeOffRequestMapper.toDomain(e));
+  }
+
+  async findPendingByLocation(locationId: string): Promise<TimeOffRequest[]> {
+    return this.findPending(locationId);
   }
 }

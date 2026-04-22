@@ -3,6 +3,7 @@ import { DatabaseModule } from './database.module';
 import { CreateRequestUseCase } from '../application/use-cases/create-request.use-case';
 import { ApproveRequestUseCase } from '../application/use-cases/approve-request.use-case';
 import { SyncBatchBalancesUseCase } from '../application/use-cases/sync-batch-balances.use-case';
+import { GetPendingRequestsUseCase } from '../application/use-cases/get-pending-requests.use-case';
 import { TimeOffController } from './controllers/time-off.controller';
 import { SyncController } from './controllers/sync.controller';
 import { BALANCE_REPOSITORY } from '../application/balance.repository';
@@ -36,6 +37,12 @@ const HCM_CLIENT = Symbol('IHcmClient');
       inject: [BALANCE_REPOSITORY, HCM_CLIENT],
       useFactory: (repo: ITimeOffRepository, hcm: IHcmClient) =>
         new SyncBatchBalancesUseCase(repo, hcm),
+    },
+    {
+      provide: GetPendingRequestsUseCase,
+      inject: [TIME_OFF_REQUEST_REPOSITORY],
+      useFactory: (repo: ITimeOffRepository) =>
+        new GetPendingRequestsUseCase(repo),
     },
   ],
 })

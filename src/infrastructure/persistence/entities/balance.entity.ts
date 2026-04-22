@@ -9,7 +9,7 @@ export class BalanceEntity {
   location_id!: string;
 
   @PrimaryColumn()
-  leave_type_id!: string;
+  leave_type_id!: string; // Stored as string in SQLite
 
   @Column('decimal', { precision: 10, scale: 2 })
   current_balance!: number;
