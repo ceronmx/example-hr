@@ -5,6 +5,8 @@
 
 ExampleHR is a production-ready Time-Off Microservice built with **Hexagonal Architecture** and NestJS. It is designed to handle high-concurrency requests and maintain synchronization with external HCM (Human Capital Management) systems.
 
+**Repository:** [https://github.com/ceronmx/example-hr](https://github.com/ceronmx/example-hr)
+
 ---
 
 ## 🏛 Architecture Overview
@@ -64,6 +66,8 @@ pnpm install
 The system is built with a "Quality First" mindset:
 - **Domain Layer:** 100% Code Coverage.
 - **E2E Suite:** Covers full happy paths, double-spending protection, and idempotency.
+
+![Coverage Report](./docs/testing/coverage.png)
 
 ```bash
 # Run Unit Tests
