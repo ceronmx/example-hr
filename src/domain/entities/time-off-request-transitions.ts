@@ -4,17 +4,21 @@ export const ALLOWED_TRANSITIONS: Record<
   TimeOffRequestStatus,
   TimeOffRequestStatus[]
 > = {
-  [TimeOffRequestStatus.PENDING]: [
+  [TimeOffRequestStatus.PENDING_APPROVAL]: [
     TimeOffRequestStatus.APPROVED,
+    TimeOffRequestStatus.REJECTED,
+  ],
+  [TimeOffRequestStatus.APPROVED]: [
+    TimeOffRequestStatus.SYNCING,
     TimeOffRequestStatus.CANCELLED,
   ],
-  [TimeOffRequestStatus.APPROVED]: [TimeOffRequestStatus.SYNCING],
   [TimeOffRequestStatus.SYNCING]: [
     TimeOffRequestStatus.SYNCED,
-    TimeOffRequestStatus.FAILED,
+    TimeOffRequestStatus.FAILED_SYNC,
   ],
+  [TimeOffRequestStatus.REJECTED]: [],
   [TimeOffRequestStatus.SYNCED]: [],
-  [TimeOffRequestStatus.FAILED]: [],
+  [TimeOffRequestStatus.FAILED_SYNC]: [],
   [TimeOffRequestStatus.CANCELLED]: [],
 };
 

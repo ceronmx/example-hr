@@ -1,12 +1,16 @@
 export class Balance {
-  employee_id!: string;
-  location_id!: string;
-  leave_type_id!: string;
-  current_balance!: number;
-  last_synced_at!: Date;
-  updated_at?: Date;
+  employeeId!: string;
+  locationId!: string;
+  leaveTypeId!: string;
+  currentBalance!: number;
+  lastSyncedAt!: Date;
+  updatedAt?: Date;
 
   constructor(props: Partial<Balance>) {
     Object.assign(this, props);
+  }
+
+  canCover(days: number): boolean {
+    return this.currentBalance >= days;
   }
 }

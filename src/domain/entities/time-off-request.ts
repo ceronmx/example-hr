@@ -1,20 +1,21 @@
 import { TimeOffRequestStatus } from './time-off-request-status.enum';
 import { canTransitionTo } from './time-off-request-transitions';
 import { Balance } from './balance';
+import { DomainException } from '../exceptions/domain.exception';
 
 export class TimeOffRequest {
   id!: string;
-  employee_id!: string;
-  location_id!: string;
-  leave_type_id!: string;
-  days_requested!: number;
-  start_date!: Date;
-  end_date!: Date;
+  employeeId!: string;
+  locationId!: string;
+  leaveTypeId!: string;
+  daysRequested!: number;
+  startDate!: Date;
+  endDate!: Date;
   status!: TimeOffRequestStatus;
-  idempotency_key!: string;
-  hcm_ref_id!: string | null;
-  error_message!: string | null;
-  created_at!: Date;
+  idempotencyKey!: string;
+  hcmRefId!: string | null;
+  errorMessage!: string | null;
+  createdAt!: Date;
   balance?: Balance;
 
   constructor(props: Partial<TimeOffRequest>) {
@@ -23,7 +24,7 @@ export class TimeOffRequest {
 
   transitionTo(nextStatus: TimeOffRequestStatus): void {
     if (!canTransitionTo(this.status, nextStatus)) {
-      throw new Error(
+      throw new DomainException(
         `Invalid status transition from ${this.status} to ${nextStatus}`,
       );
     }
