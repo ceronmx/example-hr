@@ -16,6 +16,10 @@ export class SyncController {
     status: 200,
     description: 'Reconciliation triggered successfully',
   })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error during synchronization',
+  })
   async syncBatch() {
     await this.syncBatchBalancesUseCase.execute();
     return { message: 'Batch sync completed' };
