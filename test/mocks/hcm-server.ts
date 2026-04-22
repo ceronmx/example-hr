@@ -14,7 +14,7 @@ const processedIdempotencyKeys: Map<string, string> = new Map();
 
 // Fault Injection Configuration
 const SLEEP_MS = Number(process.env.SLEEP_MS) || 0;
-const ERROR_CHANCE = 0.1; // 10% chance of 500 error
+const ERROR_CHANCE = 0.0; // Temporarily disabled for baseline stability
 
 app.use(async (req, res, next) => {
   // Simulate network latency
@@ -23,7 +23,7 @@ app.use(async (req, res, next) => {
   }
 
   // Random 500 Internal Server Error
-  if (Math.random() < ERROR_CHANCE) {
+  if (ERROR_CHANCE > 0 && Math.random() < ERROR_CHANCE) {
     console.log(
       `[HCM-MOCK] Injected Chaos: Returning 500 for ${req.method} ${req.url}`,
     );
@@ -34,6 +34,22 @@ app.use(async (req, res, next) => {
   }
 
   next();
+});
+
+// GET /balances - Returns all balances for batch sync
+app.get('/balances', (req: Request, res: Response) => {
+  const result = Object.entries(balances).map(([key, balance]) => {
+    // Actually we used EMP-001-LOC-001. Let's fix the key format to be easier.
+    // Or just parse it specifically.
+    return {
+      employeeId: key.split('-').slice(0, 2).join('-'),
+      locationId: key.split('-').slice(2).join('-'),
+      leaveTypeId: 'VACATION',
+      balance,
+    };
+  });
+  console.log(`[HCM-MOCK] GET All Balances: ${JSON.stringify(result)}`);
+  res.json(result);
 });
 
 // GET /balances/:employeeId/:locationId

@@ -54,7 +54,26 @@ export class HcmClientImpl implements IHcmClient {
   }
 
   async getBatchBalances(): Promise<Balance[]> {
-    // In a real implementation, this might call a different endpoint
-    return await Promise.resolve([]);
+    const response = await fetch(`${this.baseUrl}/balances`);
+    if (!response.ok) {
+      throw new Error(`HCM Error: ${response.statusText}`);
+    }
+    const data = (await response.json()) as Array<{
+      employeeId: string;
+      locationId: string;
+      leaveTypeId: string;
+      balance: number;
+    }>;
+
+    return data.map(
+      (item) =>
+        new Balance({
+          employeeId: item.employeeId,
+          locationId: item.locationId,
+          leaveTypeId: item.leaveTypeId as LeaveType,
+          currentBalance: item.balance,
+          lastSyncedAt: new Date(),
+        }),
+    );
   }
 }

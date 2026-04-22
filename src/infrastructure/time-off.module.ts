@@ -10,9 +10,9 @@ import { BALANCE_REPOSITORY } from '../application/balance.repository';
 import { TIME_OFF_REQUEST_REPOSITORY } from '../application/time-off-request.repository';
 import { ITimeOffRepository } from '../application/ports/time-off-repository.interface';
 import { IHcmClient } from '../application/ports/hcm-client.interface';
-import { HcmClientMock } from './hcm/hcm.client.mock';
+import { HcmClientImpl } from './hcm/hcm.client.impl';
 
-const HCM_CLIENT = Symbol('IHcmClient');
+export const HCM_CLIENT = Symbol('IHcmClient');
 
 @Module({
   imports: [DatabaseModule],
@@ -20,7 +20,7 @@ const HCM_CLIENT = Symbol('IHcmClient');
   providers: [
     {
       provide: HCM_CLIENT,
-      useClass: HcmClientMock,
+      useClass: HcmClientImpl,
     },
     {
       provide: CreateRequestUseCase,
@@ -29,8 +29,9 @@ const HCM_CLIENT = Symbol('IHcmClient');
     },
     {
       provide: ApproveRequestUseCase,
-      inject: [TIME_OFF_REQUEST_REPOSITORY],
-      useFactory: (repo: ITimeOffRepository) => new ApproveRequestUseCase(repo),
+      inject: [TIME_OFF_REQUEST_REPOSITORY, HCM_CLIENT],
+      useFactory: (repo: ITimeOffRepository, hcm: IHcmClient) =>
+        new ApproveRequestUseCase(repo, hcm),
     },
     {
       provide: SyncBatchBalancesUseCase,
